@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "bot-server"
+version = "0.1.0"
+description = ""
+authors = ["Max Barinov <me@maxbarinov.com>"]
+package-mode = false 
+
+[tool.poetry.dependencies]
+python = ">=3.13,<4.0"
+python-dotenv = "^1.1.0"
+livekit-agents = { version = "^1.0", extras = ["google"] }
+livekit-plugins-noise-cancellation = "^0.2"
+
+[build-system]
+requires = ["poetry-core>=2.0.0"]
+build-backend = "poetry.core.masonry.api"

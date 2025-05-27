@@ -1,0 +1,16 @@
+{
+  "name": "@trivia-voice-ai/bot-server",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Voice AI Assistant using LiveKit Agents and Gemini Live API",
+  "scripts": {
+    "start": "poetry run python agent.py start",
+    "dev": "poetry run python agent.py dev",
+    "console": "poetry run python agent.py console",
+    "install-deps": "poetry install",
+    "lint": "poetry run python -m py_compile agent.py",
+    "check-types": "poetry run python -c \"import agent; print('Type check passed')\""
+  },
+  "dependencies": {},
+  "devDependencies": {}
+} 

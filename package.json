@@ -4,7 +4,12 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
+    "start": "turbo run start",
+    "console": "turbo run console",
+    "setup": "npm install && turbo run install-deps",
     "lint": "turbo run lint",
+    "test": "turbo run test",
+    "install-deps": "turbo run install-deps",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types"
   },

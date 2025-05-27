@@ -1,0 +1,55 @@
+{
+  "name": "trivia-mcp",
+  "version": "1.0.0",
+  "description": "A Model Context Protocol server for playing trivia games using the Open Trivia Database API",
+  "type": "module",
+  "main": "dist/server.js",
+  "types": "dist/server.d.ts",
+  "files": [
+    "dist/**/*",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "dev": "tsx src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "test": "node test.js",
+    "clean": "rm -rf dist",
+    "typecheck": "tsc --noEmit",
+    "lint": "echo 'Linting would go here'",
+    "prepublishOnly": "npm run clean && npm run build"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "trivia",
+    "quiz",
+    "opentdb",
+    "ai",
+    "claude",
+    "fastmcp"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/trivia-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/trivia-mcp/issues"
+  },
+  "homepage": "https://github.com/yourusername/trivia-mcp#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "fastmcp": "^2.1.3",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsx": "^4.7.1",
+    "typescript": "^5.4.2"
+  }
+}
