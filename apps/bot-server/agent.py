@@ -2,7 +2,8 @@
 import logging
 from dotenv import load_dotenv
 from livekit import agents
-from livekit.agents import AgentSession, Agent, RoomInputOptions, RoomOutputOptions, mcp
+from livekit.agents import AgentSession, Agent, RoomInputOptions, mcp, function_tool
+from livekit.agents import metrics, MetricsCollectedEvent
 from openai.types.beta.realtime.session import TurnDetection
 from livekit.plugins import (
     openai,
@@ -44,6 +45,22 @@ class Assistant(Agent):
             instructions="introduce yourself and ask if they're ready to play some trivia questions"
         )    
 
+    @function_tool
+    async def end_call(self) -> str:
+        """
+        Called when the user wants to finish or end the call/conversation.
+        
+        This function handles saying goodbye and ending the trivia session.
+        """
+        
+        logger.info("User requested to end the call")
+
+        await self.session.generate_reply(instructions=f"Say goodbye and end the call")
+        
+        await self.session.aclose();
+        
+        return "Call ended successfully"
+
 async def entrypoint(ctx: agents.JobContext):
     logger.info("Setting up Voice Assistant")
     
@@ -64,6 +81,19 @@ async def entrypoint(ctx: agents.JobContext):
             mcp.MCPServerHTTP(url="http://localhost:8080/sse"),
         ]
     )
+
+    usage_collector = metrics.UsageCollector()
+
+    @session.on("metrics_collected")
+    def _on_metrics_collected(ev: MetricsCollectedEvent):
+        usage_collector.collect(ev.metrics)
+
+    async def log_usage():
+        summary = usage_collector.get_summary()
+        logger.info(f"Usage: {summary}")
+
+    # At shutdown, generate and log the summary from the usage collector
+    ctx.add_shutdown_callback(log_usage)
     
     await session.start(
         room=ctx.room,
