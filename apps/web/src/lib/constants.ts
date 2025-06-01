@@ -58,15 +58,15 @@ export const RESOURCES = [
   },
   {
     name: "github",
-    desc: "Source code & demos",
+    desc: "Source code",
     icon: "🐙",
-    url: "https://github.com",
+    url: "https://github.com/mbarinov/trivia-voice",
   },
   {
     name: "contact",
     desc: "Let's connect",
     icon: "💬",
-    url: "#contact",
+    url: "mailto:me@maxbarinov.com",
   },
 ] as const;
 
