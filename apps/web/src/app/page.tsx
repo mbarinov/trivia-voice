@@ -296,7 +296,7 @@ function ContactSection() {
   const contactInfo = [
     {
       label: "Email",
-      value: "max@maxbarinov.com",
+      value: "me@maxbarinov.com",
       link: "mailto:me@maxbarinov.com",
     },
     {
