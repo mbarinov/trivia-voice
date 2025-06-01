@@ -88,7 +88,6 @@ function TranscriptionView() {
                 : "bg-gradient-to-r from-green-400/15 to-green-600/10 border-l-4 border-green-400 ml-8 mr-0"
             } shadow-lg`}
           >
-            {/* Message Header */}
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-3">
                 <div

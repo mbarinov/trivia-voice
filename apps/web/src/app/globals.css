@@ -25,6 +25,7 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* LiveKit Component Overrides */
 :root {
   --lk-va-bar-width: 72px;
   --lk-control-bar-height: unset;
@@ -34,13 +35,33 @@ body {
   @apply border-t-0 p-0 h-min mr-4;
 }
 
+/* Mobile responsive control bar */
+@media (max-width: 640px) {
+  .lk-agent-control-bar {
+    @apply mr-0 mt-2 w-full;
+  }
+}
+
 .lk-disconnect-button {
   @apply h-[36px] hover:bg-[#6b221a] hover:text-[white] bg-[#31100c] border-[#6b221a];
+}
+
+/* Mobile-friendly disconnect button */
+@media (max-width: 640px) {
+  .lk-disconnect-button {
+    @apply h-[44px] min-h-[44px] text-sm px-4;
+  }
 }
 
 /* Custom Terminal Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
+}
+
+@media (max-width: 640px) {
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
 }
 
 ::-webkit-scrollbar-track {
@@ -69,6 +90,15 @@ body {
   overflow-y: auto !important;
 }
 
+/* Mobile responsive transcription */
+@media (max-width: 640px) {
+  .lk-transcription {
+    padding: 0.75rem !important;
+    max-height: 250px !important;
+    font-size: 0.875rem !important;
+  }
+}
+
 .lk-transcription .lk-transcription-item {
   color: #22c55e !important;
   font-family: 'Courier New', monospace !important;
@@ -91,26 +121,31 @@ body {
   border: none !important;
 }
 
-.lk-voice-assistant-control-bar button {
-  background: rgba(34, 197, 94, 0.2) !important;
-  border: 1px solid rgba(34, 197, 94, 0.5) !important;
-  color: #22c55e !important;
-  border-radius: 4px !important;
-  font-family: 'Courier New', monospace !important;
-  font-size: 12px !important;
-  padding: 4px 8px !important;
-}
+/* Mobile touch improvements */
+@media (max-width: 640px) {
+  /* Ensure minimum touch target size */
+  button, .clickable {
+    min-height: 44px;
+    min-width: 44px;
+  }
 
-.lk-voice-assistant-control-bar button:hover {
-  background: rgba(34, 197, 94, 0.3) !important;
-  border-color: #22c55e !important;
-  box-shadow: 0 0 8px rgba(34, 197, 94, 0.3) !important;
-}
+  /* Better text selection on mobile */
+  .text-selectable {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+  }
 
-.lk-voice-assistant-control-bar button:disabled {
-  background: rgba(100, 100, 100, 0.2) !important;
-  border-color: rgba(100, 100, 100, 0.3) !important;
-  color: rgba(100, 100, 100, 0.7) !important;
+  /* Prevent zoom on input focus */
+  input, select, textarea {
+    font-size: 16px;
+  }
+
+  /* Improve viewport handling */
+  .overflow-hidden {
+    -webkit-overflow-scrolling: touch;
+  }
 }
 
 /* Connection State Styling */

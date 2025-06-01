@@ -3,7 +3,6 @@ import { LiveKitRoom, RoomAudioRenderer } from "@livekit/components-react";
 import { NoAgentNotification } from "../../no-agent-notification";
 import { GameHeader } from "./GameHeader";
 import { VoiceSection } from "./VoiceSection";
-import { ConversationSection } from "./ConversationSection";
 import { useGameTimer } from "../hooks/useGameTimer";
 import { useGameStatus } from "../hooks/useGameStatus";
 import { ConnectionDetails } from "../hooks/useConnectionManager";
@@ -71,13 +70,10 @@ function TriviaGameInner({
       />
 
       {/* Main Content Area */}
-      <div className="flex-1 p-6 overflow-hidden">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full">
-          {/* Voice Visualizer - Takes 1 column */}
+      <div className="flex-1 p-3 sm:p-4 lg:p-6 overflow-hidden">
+        <div className="h-full w-full max-w-5xl mx-auto">
+          {/* Voice Visualizer - Full width, centered */}
           <VoiceSection />
-
-          {/* Transcription - Takes 2 columns */}
-          <ConversationSection />
         </div>
       </div>
 

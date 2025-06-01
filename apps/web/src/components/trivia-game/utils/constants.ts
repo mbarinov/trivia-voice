@@ -51,7 +51,22 @@ export const AGENT_STATUS = {
 
 export const UI_CONSTANTS = {
   CHAT_HEIGHT: "calc(100vh-20rem)",
-  VISUALIZER_HEIGHT: "h-80",
-  BAR_COUNT: 7,
-  MIN_BAR_HEIGHT: 24,
+  VISUALIZER_HEIGHT: {
+    mobile: "h-48",
+    tablet: "h-64",
+    desktop: "h-80",
+  },
+  BAR_COUNT: {
+    mobile: 5,
+    desktop: 7,
+  },
+  MIN_BAR_HEIGHT: {
+    mobile: 16,
+    desktop: 24,
+  },
+  RESPONSIVE_SPACING: {
+    mobile: "p-3",
+    tablet: "sm:p-4",
+    desktop: "lg:p-6",
+  },
 } as const;

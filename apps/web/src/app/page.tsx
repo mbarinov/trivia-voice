@@ -27,7 +27,6 @@ export default function Home() {
           <ContactSection />
         </div>
 
-        {/* Game Modal */}
         {isGameActive && <TriviaGame onStop={stopGame} />}
       </div>
     </ErrorBoundary>
@@ -117,7 +116,7 @@ function ActionButtons({ onStartGame }: { onStartGame: () => void }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: 4, duration: 0.5 }}
-      className="flex flex-col sm:flex-row gap-4 justify-center"
+      className="flex flex-col sm:flex-row gap-4 justify-center px-4"
     >
       <motion.button
         whileHover={{
@@ -126,7 +125,7 @@ function ActionButtons({ onStartGame }: { onStartGame: () => void }) {
         }}
         whileTap={{ scale: 0.95 }}
         onClick={onStartGame}
-        className="bg-green-400 text-black px-8 py-3 cursor-pointer rounded font-bold text-lg hover:bg-green-300 transition-all duration-200"
+        className="bg-green-400 text-black px-6 sm:px-8 py-3 sm:py-3 cursor-pointer rounded font-bold text-base sm:text-lg hover:bg-green-300 transition-all duration-200 min-h-[48px] w-full sm:w-auto"
       >
         &gt; START GAME
       </motion.button>
@@ -134,11 +133,12 @@ function ActionButtons({ onStartGame }: { onStartGame: () => void }) {
         href="https://github.com/mbarinov/trivia-voice"
         target="_blank"
         rel="noopener noreferrer"
+        className="w-full sm:w-auto"
       >
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="border border-green-400 text-green-400 px-8 py-3 rounded font-bold text-lg hover:bg-green-400/10 transition-all duration-200 cursor-pointer"
+          className="border border-green-400 text-green-400 px-6 sm:px-8 py-3 sm:py-3 rounded font-bold text-base sm:text-lg hover:bg-green-400/10 transition-all duration-200 cursor-pointer min-h-[48px] w-full"
         >
           &gt; GITHUB
         </motion.button>
@@ -188,11 +188,11 @@ function GameFeatures() {
 
 function GameTerminal() {
   return (
-    <div className="bg-black/50 border border-green-400/30 rounded-lg p-4">
-      <div className="text-green-400/70 text-sm mb-2">
+    <div className="bg-black/50 border border-green-400/30 rounded-lg p-3 sm:p-4">
+      <div className="text-green-400/70 text-xs sm:text-sm mb-2">
         ~/demo $ voice-trivia --interactive
       </div>
-      <pre className="text-green-400 text-xs">
+      <pre className="text-green-400 text-xs sm:text-xs overflow-x-auto">
         {`Initializing voice connection...
 ✓ Microphone access granted
 ✓ AI agent connected
