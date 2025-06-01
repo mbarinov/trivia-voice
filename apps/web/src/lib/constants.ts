@@ -57,6 +57,12 @@ export const RESOURCES = [
     url: "#articles",
   },
   {
+    name: "livekit-agents",
+    desc: "LiveKit Agents",
+    icon: "🤖",
+    url: "https://docs.livekit.io/agents/",
+  },
+  {
     name: "github",
     desc: "Source code",
     icon: "🐙",
