@@ -30,36 +30,12 @@ body {
   --lk-control-bar-height: unset;
 }
 
-.agent-visualizer > .lk-audio-bar {
-  width: 72px;
-}
-
 .lk-agent-control-bar {
   @apply border-t-0 p-0 h-min mr-4;
 }
 
 .lk-disconnect-button {
   @apply h-[36px] hover:bg-[#6b221a] hover:text-[white] bg-[#31100c] border-[#6b221a];
-}
-
-/* Hacker Theme Overrides for LiveKit Components */
-.agent-visualizer {
-  background: rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(34, 197, 94, 0.3);
-  border-radius: 8px;
-  padding: 1rem;
-}
-
-.agent-visualizer .lk-bar-visualizer {
-  --lk-bar-color: #22c55e;
-  --lk-bar-active-color: #16a34a;
-  gap: 4px;
-}
-
-.agent-visualizer .lk-bar-visualizer > div {
-  background: linear-gradient(to top, #22c55e, #16a34a);
-  border-radius: 2px;
-  box-shadow: 0 0 8px rgba(34, 197, 94, 0.3);
 }
 
 /* Custom Terminal Scrollbar */
