@@ -297,7 +297,7 @@ function ContactSection() {
     {
       label: "Email",
       value: "max@maxbarinov.com",
-      link: "mailto:max@maxbarinov.com",
+      link: "mailto:me@maxbarinov.com",
     },
     {
       label: "Website",
