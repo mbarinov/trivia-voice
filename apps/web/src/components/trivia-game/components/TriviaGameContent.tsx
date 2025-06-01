@@ -1,0 +1,91 @@
+import { useCallback } from "react";
+import { LiveKitRoom, RoomAudioRenderer } from "@livekit/components-react";
+import { NoAgentNotification } from "../../no-agent-notification";
+import { GameHeader } from "./GameHeader";
+import { VoiceSection } from "./VoiceSection";
+import { ConversationSection } from "./ConversationSection";
+import { useGameTimer } from "../hooks/useGameTimer";
+import { useGameStatus } from "../hooks/useGameStatus";
+import { ConnectionDetails } from "../hooks/useConnectionManager";
+
+interface TriviaGameContentProps {
+  connectionDetails: ConnectionDetails;
+  onStop: () => void;
+}
+
+export function TriviaGameContent({
+  connectionDetails,
+  onStop,
+}: TriviaGameContentProps) {
+  const handleConnected = useCallback(async () => {
+    // Initialize audio context for browser autoplay policies
+    try {
+      const AudioContextClass =
+        window.AudioContext ||
+        (window as unknown as { webkitAudioContext: typeof AudioContext })
+          .webkitAudioContext;
+      const audioContext = new AudioContextClass();
+      if (audioContext.state === "suspended") {
+        await audioContext.resume();
+      }
+    } catch (error) {
+      console.warn("Could not initialize audio context:", error);
+    }
+  }, []);
+
+  return (
+    <LiveKitRoom
+      serverUrl={connectionDetails.serverUrl}
+      token={connectionDetails.participantToken}
+      connect={true}
+      audio={true}
+      video={false}
+      className="h-full"
+      onConnected={handleConnected}
+    >
+      <TriviaGameInner connectionDetails={connectionDetails} onStop={onStop} />
+    </LiveKitRoom>
+  );
+}
+
+// This component runs inside the LiveKitRoom context
+function TriviaGameInner({
+  connectionDetails,
+  onStop,
+}: {
+  connectionDetails: ConnectionDetails;
+  onStop: () => void;
+}) {
+  const { duration } = useGameTimer();
+  const { connectionStatus, agentStatus, agentState } = useGameStatus();
+
+  return (
+    <div className="h-full flex flex-col">
+      {/* Header */}
+      <GameHeader
+        roomName={connectionDetails.roomName}
+        duration={duration}
+        connectionStatus={connectionStatus}
+        agentStatus={agentStatus}
+        onStop={onStop}
+      />
+
+      {/* Main Content Area */}
+      <div className="flex-1 p-6 overflow-hidden">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full">
+          {/* Voice Visualizer - Takes 1 column */}
+          <VoiceSection />
+
+          {/* Transcription - Takes 2 columns */}
+          <ConversationSection />
+        </div>
+      </div>
+
+      {/* Agent notifications */}
+      <NoAgentNotification state={agentState} />
+
+      {/* Audio Renderer - Essential for hearing the AI agent */}
+      <RoomAudioRenderer />
+    </div>
+  );
+}
