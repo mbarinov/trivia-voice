@@ -1,14 +1,3 @@
-import { MATRIX_CHAR_CODE } from "./constants";
-
-/**
- * Generates a random matrix character
- */
-export function generateMatrixChar(): string {
-  return String.fromCharCode(
-    MATRIX_CHAR_CODE.BASE + Math.random() * MATRIX_CHAR_CODE.RANGE
-  );
-}
-
 /**
  * Formats current time for display
  */
