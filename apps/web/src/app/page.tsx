@@ -131,7 +131,7 @@ function ActionButtons({ onStartGame }: { onStartGame: () => void }) {
         &gt; START GAME
       </motion.button>
       <Link
-        href="https://github.com/mbarinov"
+        href="https://github.com/mbarinov/trivia-voice"
         target="_blank"
         rel="noopener noreferrer"
       >
