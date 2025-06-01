@@ -1,30 +1,40 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useState } from "react";
 import Link from "next/link";
 import TypewriterText from "@/components/shared/typewriter-text";
 import TerminalHeader from "@/components/shared/terminal-header";
 import ErrorBoundary from "@/components/shared/error-boundary";
+import TriviaGame from "@/components/trivia-game";
 import { LAYOUT, TECH_STACK, RESOURCES } from "@/lib/constants";
 
 export default function Home() {
+  const [isGameActive, setIsGameActive] = useState(false);
+
+  const startGame = () => setIsGameActive(true);
+  const stopGame = () => setIsGameActive(false);
+
   return (
     <ErrorBoundary>
       <div className="min-h-screen bg-black text-green-400 font-mono overflow-hidden">
         <div className="relative z-10">
           <TerminalHeader />
-          <HeroSection />
+          <HeroSection onStartGame={startGame} />
           <GameSection />
           <TechSection />
           <ResourcesSection />
           <ContactSection />
         </div>
+
+        {/* Game Modal */}
+        {isGameActive && <TriviaGame onStop={stopGame} />}
       </div>
     </ErrorBoundary>
   );
 }
 
-function HeroSection() {
+function HeroSection({ onStartGame }: { onStartGame: () => void }) {
   return (
     <section className={`max-w-${LAYOUT.MAX_WIDTH} mx-auto ${LAYOUT.PADDING}`}>
       <motion.div
@@ -46,7 +56,7 @@ function HeroSection() {
         />
 
         <SystemStatusPanel />
-        <ActionButtons />
+        <ActionButtons onStartGame={onStartGame} />
       </motion.div>
     </section>
   );
@@ -101,7 +111,7 @@ function SystemStatusPanel() {
   );
 }
 
-function ActionButtons() {
+function ActionButtons({ onStartGame }: { onStartGame: () => void }) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -109,18 +119,17 @@ function ActionButtons() {
       transition={{ delay: 4, duration: 0.5 }}
       className="flex flex-col sm:flex-row gap-4 justify-center"
     >
-      <Link href="/room">
-        <motion.button
-          whileHover={{
-            scale: 1.05,
-            boxShadow: "0 0 20px rgba(34, 197, 94, 0.5)",
-          }}
-          whileTap={{ scale: 0.95 }}
-          className="bg-green-400 text-black px-8 py-3 cursor-pointer rounded font-bold text-lg hover:bg-green-300 transition-all duration-200"
-        >
-          &gt; START GAME
-        </motion.button>
-      </Link>
+      <motion.button
+        whileHover={{
+          scale: 1.05,
+          boxShadow: "0 0 20px rgba(34, 197, 94, 0.5)",
+        }}
+        whileTap={{ scale: 0.95 }}
+        onClick={onStartGame}
+        className="bg-green-400 text-black px-8 py-3 cursor-pointer rounded font-bold text-lg hover:bg-green-300 transition-all duration-200"
+      >
+        &gt; START GAME
+      </motion.button>
       <Link
         href="https://github.com/mbarinov"
         target="_blank"
