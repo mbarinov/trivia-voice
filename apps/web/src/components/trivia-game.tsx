@@ -13,7 +13,6 @@ import {
 import { ConnectionState } from "livekit-client";
 import { NoAgentNotification } from "./no-agent-notification";
 import useCombinedTranscriptions from "@/hooks/use-combined-transcriptions";
-import useLocalMicTrack from "@/hooks/use-local-mic-track";
 
 export type ConnectionDetails = {
   serverUrl: string;
@@ -342,9 +341,9 @@ function TriviaGameContent({
             </div>
 
             {/* Chat Card */}
-            <div className="bg-gradient-to-br from-black/80 to-blue-900/10 border border-green-400/40 rounded-xl shadow-lg shadow-green-400/10 h-[calc(100%-3rem)] overflow-hidden">
+            <div className="bg-gradient-to-br from-black/80 to-blue-900/10 border border-green-400/40 rounded-xl shadow-lg shadow-green-400/10 flex flex-col h-[calc(100vh-20rem)]">
               {/* Chat Header */}
-              <div className="border-b border-green-400/20 p-4 bg-black/50">
+              <div className="border-b border-green-400/20 p-4 bg-black/50 flex-shrink-0">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
@@ -359,7 +358,7 @@ function TriviaGameContent({
               </div>
 
               {/* Chat Content */}
-              <div className="p-6 h-[calc(100%-5rem)] overflow-hidden">
+              <div className="flex-1 min-h-0">
                 <TranscriptionView />
               </div>
             </div>
@@ -400,9 +399,13 @@ function TranscriptionView() {
   // Auto-scroll to bottom when new transcriptions arrive
   useEffect(() => {
     if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollTo({
-        top: scrollContainerRef.current.scrollHeight,
-        behavior: "smooth",
+      const scrollContainer = scrollContainerRef.current;
+      // Use requestAnimationFrame to ensure DOM updates are complete
+      requestAnimationFrame(() => {
+        scrollContainer.scrollTo({
+          top: scrollContainer.scrollHeight,
+          behavior: "smooth",
+        });
       });
     }
   }, [transcriptions]);
@@ -410,8 +413,7 @@ function TranscriptionView() {
   return (
     <div
       ref={scrollContainerRef}
-      className="space-y-4 text-sm font-mono h-full overflow-y-auto pr-2"
-      style={{ scrollbarWidth: "thin" }}
+      className="h-full overflow-y-auto p-6 space-y-4 text-sm font-mono scrollbar-thin scrollbar-thumb-green-400/20 scrollbar-track-transparent"
     >
       {transcriptions.length === 0 ? (
         <div className="text-center py-12">
