@@ -47,7 +47,6 @@ export function TriviaGameContent({
   );
 }
 
-// This component runs inside the LiveKitRoom context
 function TriviaGameInner({
   connectionDetails,
   onStop,
@@ -60,7 +59,6 @@ function TriviaGameInner({
 
   return (
     <div className="h-full flex flex-col">
-      {/* Header */}
       <GameHeader
         roomName={connectionDetails.roomName}
         duration={duration}
@@ -69,18 +67,14 @@ function TriviaGameInner({
         onStop={onStop}
       />
 
-      {/* Main Content Area */}
       <div className="flex-1 p-3 sm:p-4 lg:p-6 overflow-hidden">
         <div className="h-full w-full max-w-5xl mx-auto">
-          {/* Voice Visualizer - Full width, centered */}
           <VoiceSection />
         </div>
       </div>
 
-      {/* Agent notifications */}
       <NoAgentNotification state={agentState} />
 
-      {/* Audio Renderer - Essential for hearing the AI agent */}
       <RoomAudioRenderer />
     </div>
   );
