@@ -42,7 +42,6 @@ export const TECH_STACK = [
   { name: "TypeScript", desc: "Type safety" },
 ] as const;
 
-// Resource links data
 export const RESOURCES = [
   {
     name: "slides",
@@ -75,9 +74,3 @@ export const RESOURCES = [
     url: "mailto:me@maxbarinov.com",
   },
 ] as const;
-
-// Matrix rain character range
-export const MATRIX_CHAR_CODE = {
-  BASE: 0x30a0,
-  RANGE: 96,
-} as const;
