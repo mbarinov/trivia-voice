@@ -66,13 +66,15 @@ mcp.addTool({
 
 async function startServer() {
   try {
+    const port = parseInt(process.env["PORT"] || "8080");
+
     await mcp.start({
       transportType: "httpStream",
-      httpStream: { port: 8080 },
+      httpStream: { port },
     });
 
     console.log("🎯 Trivia MCP Server started successfully!");
-    console.log("📡 Listening on: http://localhost:8080/stream");
+    console.log(`📡 Listening on: http://localhost:${port}/stream`);
     console.log("🛠️  Available tools:");
     console.log("   • get_trivia_question - Get a new trivia question");
     console.log("   • check_trivia_answer - Check your answer to a question");
