@@ -71,6 +71,140 @@ Validates an answer to a previously asked question.
 }
 ```
 
+## 🚀 Deployment
+
+### Google Cloud Run Deployment
+
+The Trivia MCP Server can be deployed to Google Cloud Run for production use. Here's how to deploy it:
+
+#### Prerequisites
+
+1. **Google Cloud SDK** installed and configured
+2. **Docker** installed
+3. **Google Cloud Project** with Container Registry and Cloud Run APIs enabled
+
+#### Step 1: Build Docker Image
+
+From the root of the monorepo, build the Docker image with the correct platform:
+
+```bash
+# Build for Cloud Run (AMD64 architecture)
+docker build -f apps/trivia-mcp/Dockerfile --platform linux/amd64 -t gcr.io/YOUR-PROJECT-ID/trivia-mcp:latest .
+```
+
+#### Step 2: Configure Docker Authentication
+
+```bash
+# Configure Docker to authenticate with Google Cloud
+gcloud auth configure-docker
+```
+
+#### Step 3: Push Image to Container Registry
+
+```bash
+# Push the image to Google Container Registry
+docker push gcr.io/YOUR-PROJECT-ID/trivia-mcp:latest
+```
+
+#### Step 4: Deploy to Cloud Run
+
+```bash
+# Deploy to Cloud Run
+gcloud run deploy trivia-mcp \
+  --image gcr.io/YOUR-PROJECT-ID/trivia-mcp:latest \
+  --platform managed \
+  --region us-central1 \
+  --allow-unauthenticated \
+  --port 8080
+```
+
+#### Step 5: Get Service URL
+
+After deployment, you'll receive a service URL like:
+```
+https://trivia-mcp-123456789.us-central1.run.app
+```
+
+Your MCP endpoint will be available at:
+```
+https://trivia-mcp-123456789.us-central1.run.app/stream
+```
+
+### Local Docker Testing
+
+To test the Docker image locally before deploying:
+
+```bash
+# Build the image
+docker build -f apps/trivia-mcp/Dockerfile -t trivia-mcp:local .
+
+# Run locally
+docker run --rm -p 8080:8080 trivia-mcp:local
+
+# Test the endpoint
+curl -v http://localhost:8080/stream
+```
+
+Expected response: `No sessionId` (this is normal for MCP servers)
+
+### Environment Variables
+
+The server automatically configures itself for Cloud Run deployment:
+
+- **PORT**: Automatically set by Cloud Run (defaults to 8080)
+- **NODE_ENV**: Set to "production" for optimized performance
+
+### Deployment Verification
+
+To verify your deployment is working:
+
+```bash
+# Check service status
+gcloud run services describe trivia-mcp --region=us-central1
+
+# View logs
+gcloud logging read "resource.type=cloud_run_revision AND resource.labels.service_name=trivia-mcp" --limit=10
+
+# Test the endpoint
+curl -v https://YOUR-SERVICE-URL/stream
+```
+
+### Connecting to Your Deployed Server
+
+Once deployed, you can connect to your server using any MCP client:
+
+**For Claude Desktop** (`claude_desktop_config.json`):
+```json
+{
+  "mcpServers": {
+    "trivia": {
+      "url": "https://YOUR-SERVICE-URL/stream",
+      "transport": "streamable-http"
+    }
+  }
+}
+```
+
+**For FastMCP Client**:
+```python
+from fastmcp import Client
+
+client = Client("https://YOUR-SERVICE-URL/stream")
+```
+
+### Update Deployment
+
+To update your deployment with new changes:
+
+```bash
+# Rebuild and push
+docker build -f apps/trivia-mcp/Dockerfile --platform linux/amd64 -t gcr.io/YOUR-PROJECT-ID/trivia-mcp:latest .
+docker push gcr.io/YOUR-PROJECT-ID/trivia-mcp:latest
+
+# Redeploy
+gcloud run deploy trivia-mcp --image gcr.io/YOUR-PROJECT-ID/trivia-mcp:latest
+```
+
 ## 🗂️ OpenTDB Categories
 
 Popular category IDs you can use:
