@@ -24,8 +24,8 @@ RUN pip install --no-cache-dir poetry==1.8.3
 FROM base AS deps
 WORKDIR /app
 
-# Copy Poetry configuration files
-COPY pyproject.toml poetry.lock ./
+# Copy Poetry configuration files from the bot-server directory
+COPY apps/bot-server/pyproject.toml apps/bot-server/poetry.lock ./
 
 # Install dependencies
 RUN poetry config virtualenvs.create false && \
@@ -49,8 +49,8 @@ RUN adduser \
 COPY --from=deps /usr/local/lib/python3.13/site-packages /usr/local/lib/python3.13/site-packages
 COPY --from=deps /usr/local/bin /usr/local/bin
 
-# Copy application code
-COPY --chown=appuser:appuser . .
+# Copy application code from the bot-server directory
+COPY --chown=appuser:appuser apps/bot-server/ .
 
 # Ensure that any dependent models are downloaded at build-time
 RUN python agent.py download-files
@@ -63,8 +63,8 @@ RUN mkdir -p /home/appuser/.cache && \
 # Switch to non-root user
 USER appuser
 
-# Set default PORT and expose it (Cloud Run will inject PORT env var)
-ENV PORT=8080
+# Set PORT for health check (LiveKit agents health check runs on 8081 by default)
+ENV PORT=8081
 EXPOSE $PORT
 
 # Run the application
