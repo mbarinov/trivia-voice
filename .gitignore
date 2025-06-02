@@ -27,6 +27,11 @@ out/
 build
 dist
 
+# Google Cloud Service Account Keys
+*.json
+!package*.json
+!tsconfig*.json
+!turbo.json
 
 # Debug
 npm-debug.log*

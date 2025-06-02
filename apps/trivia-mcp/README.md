@@ -205,6 +205,149 @@ docker push gcr.io/YOUR-PROJECT-ID/trivia-mcp:latest
 gcloud run deploy trivia-mcp --image gcr.io/YOUR-PROJECT-ID/trivia-mcp:latest
 ```
 
+## 🔄 CI/CD Setup
+
+### Automated Deployment with GitHub Actions
+
+The repository includes a GitHub Actions workflow that automatically deploys the Trivia MCP Server to Google Cloud Run when you push to the main branch.
+
+#### Quick Setup
+
+For a quick automated setup, you can use the provided script:
+
+```bash
+# Run the automated setup script
+./scripts/setup-cicd.sh
+```
+
+This script will:
+- Enable required Google Cloud APIs
+- Create a service account with proper permissions
+- Generate a service account key
+- Provide instructions for GitHub secrets configuration
+
+#### Manual Setup
+
+If you prefer to set up manually, follow these detailed steps:
+
+1. **Google Cloud Service Account** with necessary permissions
+2. **GitHub Repository Secrets** configured
+3. **Google Cloud APIs** enabled
+
+#### Step 1: Create Service Account
+
+Create a service account with the required permissions:
+
+```bash
+# Set your project ID
+export PROJECT_ID="your-project-id"
+
+# Create service account
+gcloud iam service-accounts create trivia-mcp-deployer \
+  --description="Service account for Trivia MCP CI/CD" \
+  --display-name="Trivia MCP Deployer"
+
+# Grant necessary roles
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:trivia-mcp-deployer@$PROJECT_ID.iam.gserviceaccount.com" \
+  --role="roles/run.admin"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:trivia-mcp-deployer@$PROJECT_ID.iam.gserviceaccount.com" \
+  --role="roles/storage.admin"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:trivia-mcp-deployer@$PROJECT_ID.iam.gserviceaccount.com" \
+  --role="roles/iam.serviceAccountUser"
+
+# Create and download key
+gcloud iam service-accounts keys create trivia-mcp-key.json \
+  --iam-account="trivia-mcp-deployer@$PROJECT_ID.iam.gserviceaccount.com"
+```
+
+#### Step 2: Configure GitHub Secrets
+
+In your GitHub repository, go to **Settings > Secrets and variables > Actions** and add:
+
+| Secret Name | Description | Value |
+|------------|-------------|--------|
+| `GCP_PROJECT_ID` | Your Google Cloud Project ID | `your-project-id` |
+| `GCP_SA_KEY` | Service Account JSON Key | Contents of `trivia-mcp-key.json` |
+
+#### Step 3: Enable Required APIs
+
+```bash
+# Enable required Google Cloud APIs
+gcloud services enable cloudbuild.googleapis.com
+gcloud services enable run.googleapis.com
+gcloud services enable containerregistry.googleapis.com
+```
+
+#### Workflow Features
+
+The CI/CD workflow (`.github/workflows/deploy-trivia-mcp.yml`) includes:
+
+- ✅ **Automatic triggering** on push to main branch
+- ✅ **Path-based filtering** (only runs when relevant files change)
+- ✅ **Manual triggering** option via workflow_dispatch
+- ✅ **Dependencies installation** and build process
+- ✅ **Test execution** before deployment
+- ✅ **Docker image building** with proper caching
+- ✅ **Cloud Run deployment** with optimized settings
+- ✅ **Deployment verification** with health checks
+- ✅ **Image cleanup** to manage storage costs
+
+#### Workflow Triggers
+
+The workflow runs when:
+- Pushing to the `main` branch
+- Changes are made to:
+  - `apps/trivia-mcp/**` (any trivia-mcp files)
+  - `packages/**` (shared packages)
+  - `package.json` or `package-lock.json` (dependency changes)
+  - The workflow file itself
+
+#### Manual Deployment
+
+You can also trigger deployments manually:
+
+1. Go to **Actions** tab in your GitHub repository
+2. Select **Deploy Trivia MCP to Cloud Run** workflow
+3. Click **Run workflow** button
+4. Choose the branch and click **Run workflow**
+
+#### Monitoring Deployments
+
+- **GitHub Actions**: View deployment logs in the Actions tab
+- **Cloud Run Console**: Monitor service health and metrics
+- **Cloud Logging**: View application logs
+
+```bash
+# View recent deployment logs
+gcloud logging read "resource.type=cloud_run_revision AND resource.labels.service_name=trivia-mcp" --limit=20
+```
+
+#### Deployment Configuration
+
+The workflow deploys with these Cloud Run settings:
+- **Memory**: 512Mi
+- **CPU**: 1 vCPU
+- **Min instances**: 0 (scales to zero)
+- **Max instances**: 10
+- **Concurrency**: 80 requests per instance
+- **Port**: 8080
+- **Public access**: Enabled (unauthenticated)
+
+#### Troubleshooting CI/CD
+
+Common issues and solutions:
+
+1. **Permission Denied**: Verify service account has correct roles
+2. **Build Failures**: Check Node.js version and dependencies
+3. **Test Failures**: Ensure all tests pass locally first
+4. **Deployment Timeout**: Check Cloud Run service limits
+5. **Image Push Fails**: Verify Container Registry permissions
+
 ## 🗂️ OpenTDB Categories
 
 Popular category IDs you can use:
