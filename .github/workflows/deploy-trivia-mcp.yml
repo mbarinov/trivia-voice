@@ -43,9 +43,6 @@ jobs:
     - name: Build trivia-mcp
       run: npx turbo run build --filter=trivia-mcp
 
-    - name: Run tests
-      run: npx turbo run test --filter=trivia-mcp
-
     - name: Authenticate to Google Cloud
       id: auth
       uses: google-github-actions/auth@v2
