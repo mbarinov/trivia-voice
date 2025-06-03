@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 import logging
+import os
 from dotenv import load_dotenv
-from livekit import agents
-from livekit.agents import AgentSession, Agent, RoomInputOptions, mcp, function_tool
+from livekit import agents, api
+from livekit.agents import AgentSession, Agent, RoomInputOptions, mcp, function_tool, get_job_context
 from livekit.agents import metrics, MetricsCollectedEvent
 from openai.types.beta.realtime.session import TurnDetection
 from livekit.plugins import (
@@ -57,9 +58,8 @@ class Assistant(Agent):
 
         await self.session.generate_reply(instructions=f"Say goodbye and end the call")
         
-        await self.session.aclose();
-        
-        return "Call ended successfully"
+        job_context = get_job_context()
+        await job_context.api.room.delete_room(api.DeleteRoomRequest(room=job_context.room.name))
 
 async def entrypoint(ctx: agents.JobContext):
     logger.info("Setting up Voice Assistant")
@@ -78,7 +78,7 @@ async def entrypoint(ctx: agents.JobContext):
             )
         ),
         mcp_servers=[
-            mcp.MCPServerHTTP(url="http://localhost:8080/sse"),
+            mcp.MCPServerHTTP(url=os.getenv("TRIVIA_MCP_URL", "http://localhost:8080/sse")),
         ]
     )
 
