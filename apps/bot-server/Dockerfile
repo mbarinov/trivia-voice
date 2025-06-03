@@ -65,6 +65,7 @@ USER appuser
 
 # Set PORT for health check (LiveKit agents health check runs on 8081 by default)
 ENV PORT=8081
+ENV TRIVIA_MCP_URL=http://localhost:8080/sse
 EXPOSE $PORT
 
 # Run the application
