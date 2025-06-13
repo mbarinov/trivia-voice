@@ -47,19 +47,20 @@ export const RESOURCES = [
     name: "slides",
     desc: "Tech talk presentation",
     icon: "📊",
-    url: "#slides",
+    url: "https://pitch.com/v/voice-ai-max-barinov-2khgjs",
   },
-  {
-    name: "articles",
-    desc: "Related blog posts",
-    icon: "📝",
-    url: "#articles",
-  },
+
   {
     name: "livekit-agents",
     desc: "LiveKit Agents",
     icon: "🤖",
     url: "https://docs.livekit.io/agents/",
+  },
+  {
+    name: "pipecat",
+    desc: "Pipecat",
+    icon: "🐍",
+    url: "https://docs.pipecat.ai/getting-started/overview",
   },
   {
     name: "github",
@@ -68,9 +69,39 @@ export const RESOURCES = [
     url: "https://github.com/mbarinov/trivia-voice",
   },
   {
-    name: "contact",
-    desc: "Let's connect",
-    icon: "💬",
-    url: "mailto:me@maxbarinov.com",
+    name: "voiceai-handbook",
+    desc: "Handbook about Voice AI from Daily team",
+    icon: "📖",
+    url: "https://voiceaiandvoiceagents.com/",
+  },
+  {
+    name: "cathy-pearl-vui",
+    desc: "Cathy Pearl — Designing Voice User Interfaces",
+    icon: "🎤",
+    url: "https://www.oreilly.com/library/view/designing-voice-user/9781491955406",
+  },
+  {
+    name: "openai-voice",
+    desc: "OpenAI Realtime API Documentation",
+    icon: "🎙️",
+    url: "https://platform.openai.com/docs/guides/realtime",
+  },
+  {
+    name: "elevenlabs",
+    desc: "ElevenLabs Voice AI Platform",
+    icon: "🎭",
+    url: "https://elevenlabs.io/",
+  },
+  {
+    name: "deepgram",
+    desc: "Deepgram Speech Recognition",
+    icon: "🎯",
+    url: "https://deepgram.com/",
+  },
+  {
+    name: "cartesia",
+    desc: "Cartesia Voice AI Platform",
+    icon: "⚡",
+    url: "https://cartesia.ai/",
   },
 ] as const;
