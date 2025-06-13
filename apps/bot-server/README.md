@@ -110,7 +110,7 @@ From the workspace root:
 
 ```bash
 # Build for Cloud Run (AMD64 architecture)
-docker build -f apps/bot-server/Dockerfile --platform linux/amd64 -t gcr.io/$PROJECT_ID/bot-server:latest .
+docker build -f apps/bot-server/Dockerfile --platform linux/amd64 -t gcr.io//bot-server:latest .
 ```
 
 ### Step 4: Configure Docker Authentication
@@ -124,7 +124,7 @@ gcloud auth configure-docker
 
 ```bash
 # Push the image to Google Container Registry
-docker push gcr.io/$PROJECT_ID/bot-server:latest
+docker push gcr.io/trivia-maxbarinov-com/bot-server:latest
 ```
 
 ### Step 6: Deploy to Cloud Run
@@ -132,7 +132,7 @@ docker push gcr.io/$PROJECT_ID/bot-server:latest
 ```bash
 # Deploy to Cloud Run with secrets and proper configuration
 gcloud run deploy bot-server \
-  --image gcr.io/$PROJECT_ID/bot-server:latest \
+  --image gcr.io/trivia-maxbarinov-com/bot-server:latest \
   --platform managed \
   --region us-central1 \
   --allow-unauthenticated \

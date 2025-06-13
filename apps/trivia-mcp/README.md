@@ -198,114 +198,12 @@ To update your deployment with new changes:
 
 ```bash
 # Rebuild and push
-docker build -f apps/trivia-mcp/Dockerfile --platform linux/amd64 -t gcr.io/YOUR-PROJECT-ID/trivia-mcp:latest .
-docker push gcr.io/YOUR-PROJECT-ID/trivia-mcp:latest
+docker build -f apps/trivia-mcp/Dockerfile --platform linux/amd64 -t gcr.io/trivia-maxbarinov-com/trivia-mcp:latest .
+docker push gcr.io/trivia-maxbarinov-com/trivia-mcp:latest
 
 # Redeploy
-gcloud run deploy trivia-mcp --image gcr.io/YOUR-PROJECT-ID/trivia-mcp:latest
+gcloud run deploy trivia-mcp --image gcr.io/trivia-maxbarinov-com/trivia-mcp:latest
 ```
-
-## 🔄 CI/CD Setup
-
-### Automated Deployment with GitHub Actions
-
-The repository includes a GitHub Actions workflow that automatically deploys the Trivia MCP Server to Google Cloud Run when you push to the main branch.
-
-#### Quick Setup
-
-For a quick automated setup, you can use the provided script:
-
-```bash
-# Run the automated setup script
-./scripts/setup-cicd.sh
-```
-
-This script will:
-- Enable required Google Cloud APIs
-- Create a service account with proper permissions
-- Generate a service account key
-- Provide instructions for GitHub secrets configuration
-
-#### Manual Setup
-
-If you prefer to set up manually, follow these detailed steps:
-
-1. **Google Cloud Service Account** with necessary permissions
-2. **GitHub Repository Secrets** configured
-3. **Google Cloud APIs** enabled
-
-#### Step 1: Create Service Account
-
-Create a service account with the required permissions:
-
-```bash
-# Set your project ID
-export PROJECT_ID="your-project-id"
-
-# Create service account
-gcloud iam service-accounts create trivia-mcp-deployer \
-  --description="Service account for Trivia MCP CI/CD" \
-  --display-name="Trivia MCP Deployer"
-
-# Grant necessary roles
-gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:trivia-mcp-deployer@$PROJECT_ID.iam.gserviceaccount.com" \
-  --role="roles/run.admin"
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:trivia-mcp-deployer@$PROJECT_ID.iam.gserviceaccount.com" \
-  --role="roles/storage.admin"
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:trivia-mcp-deployer@$PROJECT_ID.iam.gserviceaccount.com" \
-  --role="roles/iam.serviceAccountUser"
-
-# Create and download key
-gcloud iam service-accounts keys create trivia-mcp-key.json \
-  --iam-account="trivia-mcp-deployer@$PROJECT_ID.iam.gserviceaccount.com"
-```
-
-#### Step 2: Configure GitHub Secrets
-
-In your GitHub repository, go to **Settings > Secrets and variables > Actions** and add:
-
-| Secret Name | Description | Value |
-|------------|-------------|--------|
-| `GCP_PROJECT_ID` | Your Google Cloud Project ID | `your-project-id` |
-| `GCP_SA_KEY` | Service Account JSON Key | Contents of `trivia-mcp-key.json` |
-
-#### Step 3: Enable Required APIs
-
-```bash
-# Enable required Google Cloud APIs
-gcloud services enable cloudbuild.googleapis.com
-gcloud services enable run.googleapis.com
-gcloud services enable containerregistry.googleapis.com
-```
-
-#### Workflow Features
-
-The CI/CD workflow (`.github/workflows/deploy-trivia-mcp.yml`) includes:
-
-- ✅ **Automatic triggering** on push to main branch
-- ✅ **Path-based filtering** (only runs when relevant files change)
-- ✅ **Manual triggering** option via workflow_dispatch
-- ✅ **Dependencies installation** and build process
-- ✅ **Test execution** before deployment
-- ✅ **Docker image building** with proper caching
-- ✅ **Cloud Run deployment** with optimized settings
-- ✅ **Deployment verification** with health checks
-- ✅ **Image cleanup** to manage storage costs
-
-#### Workflow Triggers
-
-The workflow runs when:
-- Pushing to the `main` branch
-- Changes are made to:
-  - `apps/trivia-mcp/**` (any trivia-mcp files)
-  - `packages/**` (shared packages)
-  - `package.json` or `package-lock.json` (dependency changes)
-  - The workflow file itself
 
 #### Manual Deployment
 
