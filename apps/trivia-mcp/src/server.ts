@@ -21,24 +21,46 @@ const mcp = new FastMCP({
 
 mcp.addTool({
   name: "get_trivia_question",
-  description:
-    "Get a new trivia question with optional filtering parameters (category: 9-32, difficulty: easy/medium/hard, type: multiple/boolean)",
+  description: "Get a new trivia question",
   parameters: z.object({
-    category: z.number().min(9).max(32).optional(),
-    difficulty: z.enum(["easy", "medium", "hard"]).optional(),
-    type: z.enum(["multiple", "boolean"]).optional(),
+    category: z
+      .number()
+      .min(9)
+      .max(32)
+      .optional()
+      .describe(
+        "Category ID (9-32) for trivia questions. Optional. See OpenTDB docs for category mapping."
+      ),
+    difficulty: z
+      .enum(["easy", "medium", "hard"])
+      .optional()
+      .describe("Difficulty level: easy, medium, or hard. Optional."),
+    type: z
+      .enum(["multiple", "boolean"])
+      .optional()
+      .describe(
+        "Question type: multiple choice or boolean (true/false). Optional."
+      ),
   }),
+  annotations: {
+    title: "Get Trivia Question",
+    readOnlyHint: true,
+    openWorldHint: true,
+  },
   execute: async (args) => {
+    console.debug("[get_trivia_question] called with args:", args);
     try {
       const question = await getTrivia(
         args.category,
         args.difficulty,
         args.type
       );
+      console.debug("[get_trivia_question] result:", question);
       return JSON.stringify(question, null, 2);
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "Unknown error occurred";
+      console.error(`[get_trivia_question] error: ${errorMessage}`);
       throw new Error(`Failed to get trivia question: ${errorMessage}`);
     }
   },
@@ -49,16 +71,26 @@ mcp.addTool({
   description:
     "Check your answer to a previously issued trivia question. Requires the question ID and your answer.",
   parameters: z.object({
-    id: z.string(),
-    answer: z.string(),
+    id: z
+      .string()
+      .describe("The unique ID of the trivia question you are answering."),
+    answer: z.string().describe("Your answer to the trivia question."),
   }),
+  annotations: {
+    title: "Check Trivia Answer",
+    readOnlyHint: true,
+    openWorldHint: false,
+  },
   execute: async (args) => {
+    console.debug("[check_trivia_answer] called with args:", args);
     try {
       const result = await checkAnswer(args.id, args.answer);
+      console.debug("[check_trivia_answer] result:", result);
       return JSON.stringify(result, null, 2);
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "Unknown error occurred";
+      console.error(`[check_trivia_answer] error: ${errorMessage}`);
       throw new Error(`Failed to check answer: ${errorMessage}`);
     }
   },
