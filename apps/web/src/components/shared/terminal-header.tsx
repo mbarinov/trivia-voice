@@ -31,24 +31,35 @@ export default function TerminalHeader({
     <motion.header
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="p-4 border-b border-green-400/30 backdrop-blur-sm"
+      className="py-2 sm:py-4 px-3 sm:px-4 border-b border-green-400/30 backdrop-blur-sm bg-black/70 shadow-md"
     >
-      <div className="max-w-6xl mx-auto flex justify-between items-center">
-        <div className="flex items-center gap-4">
+      <div className="max-w-6xl mx-auto flex flex-row justify-between items-center w-full overflow-x-auto whitespace-nowrap gap-2">
+        <div className="flex items-center gap-1 sm:gap-4 min-w-0">
           {showBackButton ? (
             <Link
               href="/"
-              className="text-amber-400 hover:text-amber-300 transition-colors"
+              className="text-amber-400 hover:text-amber-300 transition-colors text-sm sm:text-lg truncate"
             >
               ← root@trivia-ai:~$
             </Link>
           ) : (
-            <span className="text-amber-400">root@trivia-ai:~$</span>
+            <span className="text-amber-400 text-sm sm:text-lg truncate">
+              root@trivia-ai:~$
+            </span>
           )}
-          <span className="text-green-400">{command}</span>
+          <span className="text-green-400 text-sm sm:text-lg truncate">
+            {command}
+          </span>
         </div>
-        <div className="text-green-400/70 text-sm">
-          {showBackButton ? currentTime : `System Time: ${currentTime}`}
+        <div className="text-green-400/70 text-xs sm:text-sm truncate text-right min-w-fit ml-2">
+          {showBackButton ? (
+            currentTime
+          ) : (
+            <>
+              <span className="hidden sm:inline">System Time: </span>
+              {currentTime}
+            </>
+          )}
         </div>
       </div>
     </motion.header>
