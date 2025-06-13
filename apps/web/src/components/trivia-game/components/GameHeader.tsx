@@ -27,13 +27,13 @@ export function GameHeader({
   return (
     <div className="border-b border-green-400/30 p-3 sm:p-4">
       {/* Mobile Layout - Stacked */}
-      <div className="flex flex-col space-y-3 sm:hidden">
-        <div className="flex items-center justify-between">
+      <div className="flex flex-col space-y-4 sm:hidden">
+        <div className="flex items-center justify-between gap-2">
           <div className="min-w-0 flex-1">
-            <h2 className="text-lg font-bold text-green-400 font-mono truncate">
+            <h2 className="text-xl font-bold text-green-400 font-mono truncate">
               &gt; TRIVIA GAME ACTIVE
             </h2>
-            <p className="text-green-400/70 text-xs truncate">
+            <p className="text-green-400/70 text-sm truncate">
               Room: {roomName}
             </p>
           </div>
@@ -41,13 +41,13 @@ export function GameHeader({
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={onStop}
-            className="bg-red-600 hover:bg-red-500 text-white px-3 py-1.5 rounded font-bold text-xs transition-colors ml-2 flex-shrink-0"
+            className="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-lg font-bold text-base transition-colors ml-4 flex-shrink-0"
           >
             STOP
           </motion.button>
         </div>
 
-        <div className="grid grid-cols-3 gap-2 text-xs">
+        <div className="grid grid-cols-3 gap-3 text-sm">
           <StatusIndicator
             label="TIME"
             status={formatDuration(duration)}
